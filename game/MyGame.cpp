@@ -71,6 +71,9 @@ void CMyGame::OnStartGame()
 	m_house.push_back(p);
 	p = new CSpriteOval(850, 300, 40, 40, CColor::Green(), CColor::Black(), GetTime());
 	m_house.push_back(p);
+
+	m_marble.SetPosition(X_SLING, Y_SLING);
+	m_marble.SetVelocity(0, 0);
 }
 
 // called when Game is Over
@@ -106,14 +109,32 @@ void CMyGame::OnKeyUp(SDLKey sym, SDLMod mod, Uint16 unicode)
 
 void CMyGame::OnMouseMove(Uint16 x,Uint16 y,Sint16 relx,Sint16 rely,bool bLeft,bool bRight,bool bMiddle)
 {
+	if (m_bAiming)
+	{
+		m_marble.SetPosition(x, y);
+	}
 }
 
 void CMyGame::OnLButtonDown(Uint16 x,Uint16 y)
 {
+	if (m_marble.HitTest(x, y))
+	{
+		m_bAiming = true;
+	}
 }
 
 void CMyGame::OnLButtonUp(Uint16 x,Uint16 y)
 {
+	if (m_bAiming)
+	{
+		m_bAiming = false;
+		m_marble.SetPosition(x, y);
+
+		double fx = X_SLING - x;
+		double fy = Y_SLING - y;
+
+		m_marble.SetVelocity(10*fx,10* fy);
+	}
 }
 
 void CMyGame::OnRButtonDown(Uint16 x,Uint16 y)

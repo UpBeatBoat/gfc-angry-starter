@@ -11,6 +11,8 @@ class CMyGame : public CGame
 
 	CGraphics m_background;
 
+	bool m_bAiming;
+
 public:
 	CMyGame(void);
 	~CMyGame(void);
